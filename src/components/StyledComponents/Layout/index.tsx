@@ -10,5 +10,4 @@ export const ContainerDefault = styled.div`
 `;
 export const ContentDefault = styled.div`
     flex: 1;
-   
 `;

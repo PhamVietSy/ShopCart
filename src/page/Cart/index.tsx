@@ -1,8 +1,19 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { ReactNode, useEffect } from 'react';
+import { DeleteOutlined, RollbackOutlined } from '@ant-design/icons';
 import { RootState } from '../../store';
 import { Link } from 'react-router-dom';
-import { CartQuantity, Table } from '../../components/StyledComponents/Cart/Cart';
+import {
+    ButtonCart,
+    ButtonChage,
+    ButtonDel,
+    CartQuantity,
+    Container,
+    DivChage,
+    DivTable,
+    Table,
+    Td,
+} from '../../components/StyledComponents/Cart/Cart';
 import { addCart, deleteAllCart, deleteCart, editQuantityCart, getTotal } from '../../redux/Cart.reducer';
 import { Cart } from '../../redux/type/Product.type';
 
@@ -29,64 +40,77 @@ function Carts() {
     useEffect(() => {
         dispatch(getTotal());
     }, [carts, dispatch]);
+    const linkStyle = {
+        margin: '1rem',
+        textDecoration: 'none',
+        fontSize: '20px',
+    };
     return (
-        <div className="cart-container">
-            <h2>Shopping Cart</h2>
+        <Container className="cart-container">
             {carts.cartAr.length === 0 ? (
                 <div className="cart-empty">
-                    <p>Your cart is currently empty</p>
+                    <h1>Your cart is currently empty</h1>
                     <div className="start-shopping">
-                        <Link to="/"> Start shopping</Link>
+                        <Link to="/" style={linkStyle}>
+                            Start shopping
+                            <RollbackOutlined />
+                        </Link>
                     </div>
                 </div>
             ) : (
-                <div>
+                <DivTable className="ooo">
                     <Table>
                         <thead>
                             <tr>
-                                <th scope="row">#</th>
-                                <td>Product</td>
-                                <td>$Price</td>
-                                <td>Quantity</td>
+                                <Td>#</Td>
+                                <Td>Product</Td>
+                                <Td>Price</Td>
+                                <Td>Quantity</Td>
                             </tr>
                         </thead>
                         <tbody>
                             {carts.cartAr?.map((cart) => (
                                 <>
                                     <tr key={cart.id}>
-                                        <th scope="row">{cart.id}</th>
-                                        <td>{cart.title}</td>
-                                        <td>${cart.price}</td>
-                                        <td>
+                                        <Td scope="row">{cart.id}</Td>
+                                        <Td>{cart.title}</Td>
+                                        <Td>${cart.price}</Td>
+                                        <Td>
                                             <CartQuantity>
-                                                <button onClick={() => handleChange(cart)}>-</button>
-                                                <div className="count">{cart.quantity}</div>
-                                                <button onClick={() => handleChangeadd(cart)}>+</button>
+                                                <ButtonChage onClick={() => handleChange(cart)}>-</ButtonChage>
+                                                <DivChage className="count">{cart.quantity}</DivChage>
+                                                <ButtonChage onClick={() => handleChangeadd(cart)}>+</ButtonChage>
                                             </CartQuantity>
-                                        </td>
-                                        <td>
-                                            <button onClick={() => handleDelete(cart)}>x</button>
-                                        </td>
+                                        </Td>
+                                        <Td>
+                                            <ButtonDel onClick={() => handleDelete(cart)}>
+                                                <DeleteOutlined />
+                                            </ButtonDel>
+                                        </Td>
                                     </tr>
                                 </>
                             ))}
                         </tbody>
+                        <br />
                         <tbody>
                             <tr>
-                                <th scope="row"></th>
+                                <td></td>
                                 <td>Subtotal</td>
-                                <td>Total {carts.cartTotalAmout as ReactNode}</td>
-                                <td>{carts.cartQuantity}Item</td>
+                                <td>Total: {carts.cartTotalAmout as ReactNode}$</td>
+                                <td>{carts.cartQuantity} Items</td>
                             </tr>
                         </tbody>
                     </Table>
 
                     <div className="cart-sumary">
-                        <button onClick={handleDeleteAll}>Clear Cart</button>
+                        <ButtonCart onClick={handleDeleteAll}>
+                            Clear Cart
+                            <DeleteOutlined />
+                        </ButtonCart>
                     </div>
-                </div>
+                </DivTable>
             )}
-        </div>
+        </Container>
     );
 }
 

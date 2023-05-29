@@ -10,9 +10,10 @@ const initalState: ProductState = {
     productList: initalProductList,
 };
 export const products = createAction<Product>('products');
+export const productDetail = createAction<Product>('productDetail');
 
 const productReducer = createReducer(initalState, (builder) => {
-    builder.addCase(products, (state, action) => {});
+    builder.addCase(products, (state, action) => {}).addCase(productDetail, (state, action) => {});
 });
 
 export default productReducer;
